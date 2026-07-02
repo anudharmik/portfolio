@@ -627,13 +627,17 @@
     .flagship-card-secondary::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--yellow), transparent);
       opacity: 0.7;
     }
 
-    .flagship-card-secondary:hover { border-color: rgba(255,209,102,0.3); }
+    .flagship-card-secondary:hover {
+      border-color: rgba(255, 209, 102, 0.3);
+    }
 
     .flagship-tag-secondary {
       display: inline-flex;
@@ -644,8 +648,8 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--yellow);
-      background: rgba(255,209,102,0.08);
-      border: 1px solid rgba(255,209,102,0.25);
+      background: rgba(255, 209, 102, 0.08);
+      border: 1px solid rgba(255, 209, 102, 0.25);
       padding: 4px 10px;
       border-radius: 3px;
       margin-bottom: 16px;
@@ -660,6 +664,7 @@
       transition: all 0.25s;
       position: relative;
       overflow: hidden;
+      margin-bottom: 24px;
     }
 
     .project-card::after {
@@ -1141,16 +1146,320 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* --- ADDED UI INTERACTIVE IMPROVEMENTS --- */
+
+    /* Scroll progress bar */
+    .scroll-progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: transparent;
+      z-index: 10001;
+      pointer-events: none;
+    }
+
+    .scroll-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--yellow));
+      transition: width 0.1s ease-out;
+    }
+
+    /* Ambient background blobs */
+    .bg-blobs {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.04;
+      mix-blend-mode: screen;
+    }
+
+    .blob-1 {
+      background: var(--accent);
+      width: 45vw;
+      height: 45vw;
+      top: -15%;
+      right: -10%;
+      animation: float-slow-1 30s ease-in-out infinite alternate;
+    }
+
+    .blob-2 {
+      background: var(--yellow);
+      width: 40vw;
+      height: 40vw;
+      bottom: -15%;
+      left: -10%;
+      animation: float-slow-2 25s ease-in-out infinite alternate;
+    }
+
+    @keyframes float-slow-1 {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(-8vw, 12vh) scale(1.1);
+      }
+
+      100% {
+        transform: translate(-15vw, 6vh) scale(0.95);
+      }
+    }
+
+    @keyframes float-slow-2 {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(10vw, -10vh) scale(0.9);
+      }
+
+      100% {
+        transform: translate(6vw, -18vh) scale(1.15);
+      }
+    }
+
+    /* Custom Cursor styling */
+    @media (pointer: fine) {
+      body {
+        cursor: none;
+      }
+
+      a,
+      button,
+      .link-pill,
+      .contact-link,
+      .btn-primary,
+      .btn-ghost,
+      input,
+      textarea {
+        cursor: none !important;
+      }
+
+      .custom-cursor-dot {
+        display: none;
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 10000;
+        transform: translate(-50%, -50%);
+        transition: width 0.15s ease, height 0.15s ease, background-color 0.15s ease, opacity 0.2s ease;
+      }
+
+      .custom-cursor-circle {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 1px solid var(--accent);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        opacity: 0.35;
+        transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+      }
+
+      /* Interactive hover states */
+      .custom-cursor-dot.hovering {
+        width: 4px;
+        height: 4px;
+        background: var(--accent);
+      }
+
+      .custom-cursor-circle.hovering {
+        width: 26px;
+        height: 26px;
+        border-color: var(--accent);
+        background: rgba(110, 231, 183, 0.08);
+        opacity: 0.8;
+      }
+    }
+
+    @media (pointer: coarse) {
+
+      .custom-cursor-dot,
+      .custom-cursor-circle {
+        display: none !important;
+      }
+    }
+
+    /* Spotlight card hover glow styling */
+    .flagship-card,
+    .flagship-card-secondary,
+    .project-card,
+    .skill-category,
+    .about-card,
+    .contact-link {
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.15s cubic-bezier(0.1, 0.8, 0.2, 1);
+    }
+
+    .flagship-card {
+      background: radial-gradient(350px circle at var(--mx, 50%) var(--my, 50%), rgba(110, 231, 183, 0.05), transparent 80%), var(--surface);
+    }
+
+    .flagship-card-secondary {
+      background: radial-gradient(350px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 209, 102, 0.05), transparent 80%), var(--surface);
+    }
+
+    .project-card,
+    .skill-category,
+    .about-card {
+      background: radial-gradient(350px circle at var(--mx, 50%) var(--my, 50%), rgba(110, 231, 183, 0.04), transparent 80%), var(--surface);
+    }
+
+    .contact-link {
+      background: radial-gradient(350px circle at var(--mx, 50%) var(--my, 50%), rgba(110, 231, 183, 0.04), transparent 80%), var(--surface);
+      transition: all 0.2s;
+      /* preserve contact link transition */
+    }
+
+    /* Pipeline Flow Diagram styles */
+    .pipeline-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 8px;
+      overflow-x: auto;
+    }
+
+    .pipeline-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex-shrink: 0;
+      width: 100px;
+    }
+
+    .node-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 209, 102, 0.08);
+      border: 1px solid rgba(255, 209, 102, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--yellow);
+      margin-bottom: 8px;
+      transition: transform 0.2s;
+    }
+
+    .pipeline-node:hover .node-icon {
+      transform: scale(1.1);
+      background: rgba(255, 209, 102, 0.15);
+      box-shadow: 0 0 12px rgba(255, 209, 102, 0.2);
+    }
+
+    .node-name {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .node-api {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .pipeline-connector {
+      flex: 1;
+      min-width: 40px;
+      max-width: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .connector-svg {
+      width: 100%;
+      height: 20px;
+    }
+
+    .connector-pulse {
+      stroke-dashoffset: 0;
+      animation: pulse-flow 2s linear infinite;
+    }
+
+    .connector-pulse-delayed {
+      stroke-dashoffset: 0;
+      animation: pulse-flow 2s linear infinite;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes pulse-flow {
+      to {
+        stroke-dashoffset: -28px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pipeline-flow {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .pipeline-connector {
+        transform: rotate(90deg);
+        min-height: 30px;
+        height: 30px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgress"></div>
+  </div>
+
+  <!-- Ambient Floating Background Blobs -->
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor-dot" id="cursorDot"></div>
+  <div class="custom-cursor-circle" id="cursorCircle"></div>
+
   <!-- NAV -->
   <nav>
     <a href="#hero" class="nav-logo">
       <div class="nav-logo-dot"></div>
-      Anurag Dharmik
+      <span class="scramble-text">Anurag Dharmik</span>
     </a>
     <ul class="nav-links">
       <li><a href="#about">about</a></li>
@@ -1233,9 +1542,9 @@
   <!-- ABOUT -->
   <section id="about" class="fade-in">
     <div class="section-label">About</div>
-    <h2 class="section-title">Builder, not just a coder.</h2>
+    <h2 class="section-title scramble-text">Builder, not just a coder.</h2>
     <p class="about-main">
-      I'm a <strong>second-year CS undergrad</strong> at Ramdeobaba University (AI & Data Science) who spends more time
+      I'm a <strong>third-year CS undergrad</strong> at Ramdeobaba University (AI & Data Science) who spends more time
       shipping products than writing assignments. My work lives at the intersection of <span class="highlight">AI
         integrations</span>, <strong>scalable architecture</strong>, and <strong>execution systems</strong> — I build
       things that actually run in production.
@@ -1273,7 +1582,7 @@
   <!-- PROJECTS -->
   <section id="projects" class="fade-in">
     <div class="section-label">Projects</div>
-    <h2 class="section-title">Products, not projects.</h2>
+    <h2 class="section-title scramble-text">Products, not projects.</h2>
     <p class="section-desc">Built independently. Deployed to production. Solving real workflow problems.</p>
 
     <!-- FLAGSHIP -->
@@ -1342,10 +1651,14 @@
           <div class="flagship-tag-secondary">★ Backend · Automation Engineering</div>
           <div class="flagship-title">Automated Outreach Pipeline</div>
           <p class="flagship-desc">
-            A production-style outreach automation pipeline that discovers target companies, identifies decision-makers, enriches prospect data, verifies contacts, and automates personalized email outreach — all chained through multiple third-party APIs.
+            A production-style outreach automation pipeline that discovers target companies, identifies decision-makers,
+            enriches prospect data, verifies contacts, and automates personalized email outreach — all chained through
+            multiple third-party APIs.
           </p>
           <div style="margin-top: 20px;">
-            <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px;">Stack</div>
+            <div
+              style="font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px;">
+              Stack</div>
             <div class="stack-pills">
               <span class="stack-pill">Node.js</span>
               <span class="stack-pill">JavaScript</span>
@@ -1382,8 +1695,68 @@
           <div class="tech-block" style="background: rgba(255,209,102,0.06); border-color: rgba(255,209,102,0.25);">
             <h4 style="color: var(--yellow);">What makes this different</h4>
             <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">
-              Not a single API wrapper. A full pipeline chaining multiple real-world APIs — from company discovery to email delivery — with production-grade reliability patterns.
+              Not a single API wrapper. A full pipeline chaining multiple real-world APIs — from company discovery to
+              email delivery — with production-grade reliability patterns.
             </p>
+          </div>
+        </div>
+
+        <!-- PIPELINE FLOW DIAGRAM -->
+        <div class="pipeline-flow-wrapper" style="grid-column: 1 / -1; margin-top: 12px;">
+          <h4
+            style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px;">
+            Pipeline Data Flow</h4>
+          <div class="pipeline-flow">
+            <div class="pipeline-node">
+              <div class="node-icon">🔍</div>
+              <div class="node-name">Discovery</div>
+              <div class="node-api">Ocean.io API</div>
+            </div>
+
+            <div class="pipeline-connector">
+              <svg viewBox="0 0 60 20" class="connector-svg">
+                <line x1="0" y1="10" x2="60" y2="10" stroke="var(--border-hover)" stroke-width="2"
+                  stroke-dasharray="4 4" />
+                <line x1="0" y1="10" x2="60" y2="10" stroke="var(--yellow)" stroke-width="2" stroke-dasharray="8 20"
+                  class="connector-pulse" />
+              </svg>
+            </div>
+
+            <div class="pipeline-node">
+              <div class="node-icon">👤</div>
+              <div class="node-name">Enrichment</div>
+              <div class="node-api">Prospeo API</div>
+            </div>
+
+            <div class="pipeline-connector">
+              <svg viewBox="0 0 60 20" class="connector-svg">
+                <line x1="0" y1="10" x2="60" y2="10" stroke="var(--border-hover)" stroke-width="2"
+                  stroke-dasharray="4 4" />
+                <line x1="0" y1="10" x2="60" y2="10" stroke="var(--yellow)" stroke-width="2" stroke-dasharray="8 20"
+                  class="connector-pulse-delayed" />
+              </svg>
+            </div>
+
+            <div class="pipeline-node">
+              <div class="node-icon">✓</div>
+              <div class="node-name">Verification</div>
+              <div class="node-api">Prospeo API</div>
+            </div>
+
+            <div class="pipeline-connector">
+              <svg viewBox="0 0 60 20" class="connector-svg">
+                <line x1="0" y1="10" x2="60" y2="10" stroke="var(--border-hover)" stroke-width="2"
+                  stroke-dasharray="4 4" />
+                <line x1="0" y1="10" x2="60" y2="10" stroke="var(--yellow)" stroke-width="2" stroke-dasharray="8 20"
+                  class="connector-pulse" />
+              </svg>
+            </div>
+
+            <div class="pipeline-node">
+              <div class="node-icon">✉️</div>
+              <div class="node-name">Outreach</div>
+              <div class="node-api">Brevo API</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1394,7 +1767,9 @@
       <div class="project-number">03 · AI Module · Future FounderOS Scope</div>
       <div class="project-title">AI Outreach Engine</div>
       <p class="project-desc">
-        A standalone AI-powered outreach engine to automate prospect discovery, workflow generation, and job application tracking. Designed with an open architecture and roadmap proposed for future integration into the FounderOS ecosystem.
+        A standalone AI-powered outreach engine to automate prospect discovery, workflow generation, and job application
+        tracking. Designed with an open architecture and roadmap proposed for future integration into the FounderOS
+        ecosystem.
       </p>
       <div class="stack-pills" style="margin-bottom: 20px;">
         <span class="stack-pill">React.js</span>
@@ -1442,7 +1817,8 @@
         <div class="feature-item" style="margin-bottom: 0;">Responsive UI</div>
       </div>
       <div style="display: flex; gap: 10px; margin-top: 24px;">
-        <a href="https://job-application-tracker-seven-psi.vercel.app/" target="_blank" class="link-pill live">↗ Live App</a>
+        <a href="https://job-application-tracker-seven-psi.vercel.app/" target="_blank" class="link-pill live">↗ Live
+          App</a>
         <a href="https://github.com/anudharmik/job-application-tracker" target="_blank" class="link-pill gh">GitHub</a>
       </div>
     </div>
@@ -1451,7 +1827,7 @@
   <!-- SKILLS -->
   <section id="skills" class="fade-in">
     <div class="section-label">Stack</div>
-    <h2 class="section-title">Tools I ship with.</h2>
+    <h2 class="section-title scramble-text">Tools I ship with.</h2>
     <p class="section-desc">Technologies I've used in production — not just followed along in a tutorial.</p>
 
     <div class="skills-grid">
@@ -1588,7 +1964,7 @@
       <div class="section-label">Contact</div>
       <div class="contact-grid">
         <div>
-          <div class="contact-big-text">Let's build<br />something.</div>
+          <div class="contact-big-text scramble-text">Let's build<br />something.</div>
           <p class="contact-sub">
             Open to full-stack and AI-product engineering internships. Especially interested in early-stage startups in
             Bangalore working on meaningful problems.
@@ -1693,6 +2069,138 @@
         if (link.getAttribute('href') === '#' + current) {
           link.style.color = 'var(--text)';
         }
+      });
+    });
+
+    // --- ADDED UI INTERACTIVE SCRIPTING ---
+
+    // Scroll progress bar
+    const scrollProgress = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', () => {
+      const scrollPx = document.documentElement.scrollTop;
+      const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = winHeightPx > 0 ? (scrollPx / winHeightPx) * 100 : 0;
+      if (scrollProgress) {
+        scrollProgress.style.width = scrolled + '%';
+      }
+    });
+
+    // Custom Cursor tracking with lerp
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorCircle = document.getElementById('cursorCircle');
+    let mouseX = 0, mouseY = 0; // target position
+    let circleX = 0, circleY = 0; // current smooth position
+    let hasMoved = false;
+
+    window.addEventListener('mousemove', (e) => {
+      if (!hasMoved) {
+        if (cursorDot) cursorDot.style.display = 'block';
+        if (cursorCircle) cursorCircle.style.display = 'block';
+        hasMoved = true;
+      }
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (cursorDot) {
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+      }
+    });
+
+    // Custom cursor lerp loop
+    function animateCursor() {
+      circleX += (mouseX - circleX) * 0.15;
+      circleY += (mouseY - circleY) * 0.15;
+      if (cursorCircle) {
+        cursorCircle.style.left = circleX + 'px';
+        cursorCircle.style.top = circleY + 'px';
+      }
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hide/show cursor when mouse leaves/enters document
+    document.addEventListener('mouseleave', () => {
+      if (cursorDot) cursorDot.style.opacity = '0';
+      if (cursorCircle) cursorCircle.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      if (cursorDot) cursorDot.style.opacity = '1';
+      if (cursorCircle) cursorCircle.style.opacity = '0.35';
+    });
+
+    // Hover state selectors for custom cursor
+    const hoverables = document.querySelectorAll('a, button, .link-pill, .contact-link, .btn-primary, .btn-ghost, input, textarea');
+    hoverables.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        if (cursorDot) cursorDot.classList.add('hovering');
+        if (cursorCircle) cursorCircle.classList.add('hovering');
+      });
+      el.addEventListener('mouseleave', () => {
+        if (cursorDot) cursorDot.classList.remove('hovering');
+        if (cursorCircle) cursorCircle.classList.remove('hovering');
+      });
+    });
+
+    // Spotlight glow card hover tracking
+    const spotlightCards = document.querySelectorAll('.flagship-card, .flagship-card-secondary, .project-card, .skill-category, .about-card, .contact-link');
+    spotlightCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mx', `${x}px`);
+        card.style.setProperty('--my', `${y}px`);
+      });
+    });
+
+    // Scroll parallax translation for cards
+    const parallaxElements = document.querySelectorAll('.flagship-card, .flagship-card-secondary, .project-card, .about-card');
+    window.addEventListener('scroll', () => {
+      const viewportHeight = window.innerHeight;
+      parallaxElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const elementCenter = rect.top + rect.height / 2;
+        const viewportCenter = viewportHeight / 2;
+        const distanceFromCenter = (elementCenter - viewportCenter) / viewportHeight;
+        const translateY = distanceFromCenter * -15; // moves by max 15px
+        if (rect.top < viewportHeight && rect.bottom > 0) {
+          el.style.transform = `translateY(${translateY}px)`;
+        }
+      });
+    });
+
+    // Hacker scramble effect
+    const scrambleElements = document.querySelectorAll('.scramble-text');
+    const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
+
+    scrambleElements.forEach(element => {
+      const originalText = element.innerText;
+      let isScrambling = false;
+
+      element.addEventListener('mouseenter', () => {
+        if (isScrambling) return;
+        isScrambling = true;
+        let iteration = 0;
+        const lines = originalText.split('\n');
+
+        const interval = setInterval(() => {
+          const scrambledLines = lines.map(line => {
+            return line.split('').map((char, index) => {
+              if (char === ' ') return ' ';
+              if (index < iteration) return char;
+              return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+            }).join('');
+          });
+
+          element.innerHTML = scrambledLines.join('<br />');
+
+          if (iteration >= Math.max(...lines.map(l => l.length))) {
+            clearInterval(interval);
+            isScrambling = false;
+            element.innerHTML = lines.join('<br />');
+          }
+          iteration += 0.8; // fine speed control
+        }, 30);
       });
     });
   </script>
